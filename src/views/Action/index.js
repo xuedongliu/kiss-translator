@@ -23,10 +23,12 @@ import { shortcutRegister } from "../../libs/shortcut";
 import { sendIframeMsg } from "../../libs/iframe";
 import { kissLog } from "../../libs/log";
 import { getI18n } from "../../hooks/I18n";
+import SettingsIcon from "@mui/icons-material/Settings";
 
 export default function Action({ translator, fab }) {
   const fabWidth = 40;
   const [showPopup, setShowPopup] = useState(false);
+  const [tran, setTran] = useState(false);
   const [windowSize, setWindowSize] = useState({
     w: window.innerWidth,
     h: window.innerHeight,
@@ -214,8 +216,12 @@ export default function Action({ translator, fab }) {
               size="small"
               color="primary"
               onClick={(e) => {
-                if (!moved) {
-                  setShowPopup((pre) => !pre);
+                if (tran) {
+                  setTran(false);
+                  translator._unRegister()
+                } else {
+                  setTran(true);
+                  translator._register()
                 }
               }}
             >
@@ -224,6 +230,24 @@ export default function Action({ translator, fab }) {
                   width: 24,
                   height: 24,
                 }}
+              />
+              
+            </Fab>
+          }
+          children={
+            <Fab
+                size="small"
+                color="primary"
+                style={{marginTop: '5px'}}
+                onClick={(e) => {
+                  setShowPopup((pre) => !pre);
+                }}
+            >
+              <SettingsIcon
+                  sx={{
+                    width: 24,
+                    height: 24,
+                  }}
               />
             </Fab>
           }

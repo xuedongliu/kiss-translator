@@ -64,7 +64,6 @@ export default function Popup({ setShowPopup, translator: tran }) {
     try {
       const { name, value } = e.target;
       setRule((pre) => ({ ...pre, [name]: value }));
-
       if (!tran) {
         await sendTabMsg(MSG_TRANS_PUTRULE, { [name]: value });
       } else {

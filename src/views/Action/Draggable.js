@@ -62,9 +62,11 @@ export default function Draggable({
   const [origin, setOrigin] = useState(null);
   const [position, setPosition] = useState({ x: left, y: top });
   const setFabPosition = useMemo(() => debounce(updateFab, 500), []);
+  const [isKeyDown, setIsKeyDown] = useState(false)
 
   const handlePointerDown = (e) => {
     !isMobile && e.target.setPointerCapture(e.pointerId);
+    setIsKeyDown(true)
     onStart && onStart();
     const { x, y } = position;
     const { clientX, clientY } = isMobile ? e.targetTouches[0] : e;
@@ -72,20 +74,23 @@ export default function Draggable({
   };
 
   const handlePointerMove = (e) => {
-    onMove && onMove();
-    const { clientX, clientY } = isMobile ? e.targetTouches[0] : e;
-    if (origin) {
-      const dx = clientX - origin.clientX;
-      const dy = clientY - origin.clientY;
-      let x = origin.x + dx;
-      let y = origin.y + dy;
-      x = limitNumber(x, -width / 2, windowWidth - width / 2);
-      y = limitNumber(y, 0, windowHeight - height / 2);
-      setPosition({ x, y });
+    if (isKeyDown) {
+      onMove && onMove();
+      const { clientX, clientY } = isMobile ? e.targetTouches[0] : e;
+      if (origin) {
+        const dx = clientX - origin.clientX;
+        const dy = clientY - origin.clientY;
+        let x = origin.x + dx;
+        let y = origin.y + dy;
+        x = limitNumber(x, -width / 2, windowWidth - width / 2);
+        y = limitNumber(y, 0, windowHeight - height / 2);
+        setPosition({ x, y });
+      }
     }
   };
 
   const handlePointerUp = (e) => {
+    setIsKeyDown(false)
     e.stopPropagation();
     setOrigin(null);
   };
