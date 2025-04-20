@@ -632,7 +632,7 @@ export const DEFAULT_CSPLIST = ["https://github.com"]; // 禁用CSP名单
 
 export const DEFAULT_SETTING = {
   darkMode: false, // 深色模式
-  uiLang: "en", // 界面语言
+  uiLang: "zh", // 界面语言
   // fetchLimit: DEFAULT_FETCH_LIMIT, // 最大任务数量(移至transApis，作废)
   // fetchInterval: DEFAULT_FETCH_INTERVAL, // 任务间隔时间(移至transApis，作废)
   minLength: TRANS_MIN_LENGTH,
