@@ -166,26 +166,6 @@ export default function Popup({ setShowPopup, translator: tran }) {
         </>
       )}
       <Stack sx={{ p: 2 }} spacing={2}>
-        <Stack
-          direction="row"
-          justifyContent="space-between"
-          alignItems="center"
-          spacing={2}
-        >
-          <FormControlLabel
-            control={
-              <Switch
-                checked={transOpen === "true"}
-                onChange={handleTransToggle}
-              />
-            }
-            label={
-              commands["toggleTranslate"]
-                ? `${i18n("translate_alt")}(${commands["toggleTranslate"]})`
-                : i18n("translate_alt")
-            }
-          />
-        </Stack>
 
         <TextField
           select

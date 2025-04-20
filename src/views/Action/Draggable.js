@@ -9,14 +9,14 @@ const getEdgePosition = ({
   x: left,
   y: top,
   width,
-  height,
+  // height,
   windowWidth,
-  windowHeight,
+  // windowHeight,
   hover,
 }) => {
   const right = windowWidth - left - width;
-  const bottom = windowHeight - top - height;
-  const min = Math.min(left, top, right, bottom);
+  // const bottom = windowHeight - top - height;
+  /*const min = Math.min(left, top, right, bottom);
   switch (min) {
     case right:
       left = hover ? windowWidth - width : windowWidth - width / 2;
@@ -29,7 +29,13 @@ const getEdgePosition = ({
       break;
     default:
       top = hover ? 0 : -height / 2;
+  }*/
+  if (left > right) {
+    left = hover ? windowWidth - width : windowWidth - width / 2;
+  } else {
+    left = hover ? 0 : -width / 2;
   }
+  // console.log({ x: left, y: top })
   return { x: left, y: top };
 };
 

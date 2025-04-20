@@ -100,7 +100,7 @@ export default function Action({ translator, fab }) {
     try {
       const menuCommandIds = [];
       const { contextMenuType, uiLang } = translator.setting;
-      contextMenuType !== 0 &&
+      contextMenuType !== 0 && GM.registerMenuCommand !== void 0 &&
         menuCommandIds.push(
           GM.registerMenuCommand(
             getI18n(uiLang, "translate_switch"),
@@ -216,6 +216,9 @@ export default function Action({ translator, fab }) {
               size="small"
               color="primary"
               onClick={(e) => {
+                if (moved) {
+                  return;
+                }
                 if (tran) {
                   setTran(false);
                   translator._unRegister()

@@ -15,11 +15,11 @@ import {
 import {getFabWithDefault, getSettingWithDefault} from "./libs/storage";
 import {Translator} from "./libs/translator";
 import {isIframe, sendIframeMsg} from "./libs/iframe";
-import Slection from "./views/Selection";
+import Selection from "./views/Selection";
 import {touchTapListener} from "./libs/touch";
 import {debounce, genEventName} from "./libs/utils";
 import {handlePing, injectScript} from "./libs/gm";
-import {browser} from "./libs/browser";
+// import {browser} from "./libs/browser";
 import {matchRule} from "./libs/rules";
 import {trySyncAllSubRules} from "./libs/subRules";
 import {isInBlacklist} from "./libs/blacklist";
@@ -43,37 +43,6 @@ function runSettingPage() {
         script.textContent = `(${injectScript})("${ping}")`;
         document.head.append(script);
     }
-}
-
-/**
- * 插件监听后端事件
- * @param {*} translator
- */
-function runtimeListener(translator) {
-    browser?.runtime.onMessage.addListener(async ({action, args}) => {
-        switch (action) {
-            case MSG_TRANS_TOGGLE:
-                translator.toggle();
-                sendIframeMsg(MSG_TRANS_TOGGLE);
-                break;
-            case MSG_TRANS_TOGGLE_STYLE:
-                translator.toggleStyle();
-                sendIframeMsg(MSG_TRANS_TOGGLE_STYLE);
-                break;
-            case MSG_TRANS_GETRULE:
-                break;
-            case MSG_TRANS_PUTRULE:
-                translator.updateRule(args);
-                sendIframeMsg(MSG_TRANS_PUTRULE, args);
-                break;
-            case MSG_OPEN_TRANBOX:
-                window.dispatchEvent(new CustomEvent(MSG_OPEN_TRANBOX));
-                break;
-            default:
-                return {error: `message action is unavailable: ${action}`};
-        }
-        return {data: translator.rule};
-    });
 }
 
 /**
@@ -168,7 +137,7 @@ function showTransbox({
     ReactDOM.createRoot(shadowRootElement).render(
         <React.StrictMode>
             <CacheProvider value={cache}>
-                <Slection
+                <Selection
                     contextMenuType={contextMenuType}
                     tranboxSetting={tranboxSetting}
                     transApis={transApis}
@@ -213,6 +182,7 @@ function touchOperation(translator) {
  * 入口函数
  */
 export async function run(isUserscript = false) {
+    console.log(isUserscript, document.location.href)
     try {
         const href = document.location.href;
 
@@ -243,9 +213,6 @@ export async function run(isUserscript = false) {
             runIframe(translator);
             return;
         }
-        
-        // 监听消息
-        !isUserscript && runtimeListener(translator);
         
         // 输入框翻译
         inputTranslate(setting);
